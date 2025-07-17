@@ -36,11 +36,11 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/simple-web:${{ env.DOCKER_TAG }}
 
-# 서비스 리포지토리 체크아웃
+      # 서비스 리포지토리 체크아웃
       - name: 10.서비스 리포지토리 체크아웃
         uses: actions/checkout@v4
         with:
-          repository: yyytgf123/simple-web-platform
+          repository: dangtong-s-inc/simple-service
           ref: main
           path: .
           token: ${{ secrets.PAT }}
@@ -50,13 +50,18 @@ jobs:
         run: |
           # 파일이 존재하는지 확인
           ls -la
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}\/simple-web.*|image: ${{ secrets.DOCKER_USERNAME }}\/simple-web:${{ env.DOCKER_TAG }}|g" simple-web-deploy.yml
+          # 현재 파일 내용 확인
+          cat simple-deploy.yaml
+          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}\/simple-web.*|image: ${{ secrets.DOCKER_USERNAME }}\/simple-web:${{ env.DOCKER_TAG }}|g" simple-deploy.yaml
+          # 변경된 내용 확인
+          cat simple-deploy.yaml
+
       # 변경사항 커밋 및 푸시
       - name: 12.서비스 리포지토리 변경사항 커밋 및 푸시
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
-          git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.DOCKER_USERNAME }}/simple-web-platform.git
+          git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.DOCKER_USERNAME }}/simple-service.git
 
-          git push origin main 
+          git push origin main
