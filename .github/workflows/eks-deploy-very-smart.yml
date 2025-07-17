@@ -40,7 +40,7 @@ jobs:
       - name: 10.서비스 리포지토리 체크아웃
         uses: actions/checkout@v4
         with:
-          repository: ddoocckker123/simple-web-platform
+          repository: yyytgf123/simple-web-platform
           ref: main
           path: .
           token: ${{ secrets.PAT }}
